@@ -1,0 +1,125 @@
+openapi: 3.0.2
+info:
+  title: Lu.ma Events Plugin
+  description: A plugin that allows the user to create and manage events in Lu.ma
+  version: 'v1'
+servers:
+  - url: https://api.lu.ma
+security:
+  - x-luma-api-key: []
+paths:
+  /event/create:
+    post:
+      operationId: addEvent
+      summary: Add an event to the community
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addEvent'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createEventResponse'
+  /user:
+    get:
+      operationId: getUser
+      summary: Get the current user
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+  /user/audience/import:
+    post:
+      operationId: importAudience
+      summary: Import members into your audience and tag existing members
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/importAudienceRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Empty object on success
+
+components:
+  securitySchemes:
+    x-luma-api-key:
+      type: apiKey
+      in: header
+      name: x-luma-api-key
+
+  schemas:
+    addEvent:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The name of the event.
+        start_at:
+          type: string
+          description: The start of the event in a Date ISO string.
+        cover_url:
+          type: string
+          description: Valid URL for the event cover photo. Restricted to Unsplash or an image on the Luma CDN.
+        duration_minutes:
+          type: integer
+          description: The length of your event in minutes.
+        require_rsvp:
+          type: boolean
+          description: Require guests to register in order to see meeting information.
+        require_rsvp_approval:
+          type: boolean
+          description: Require host approval for a guest to see meeting information. If true, require_rsvp must also be true.
+        zoom_creation_method:
+          type: string
+          enum: ["created-automatically", "existing-attached", "manually-entered"]
+          description: If you want us to create a Zoom on your account, choose "created-automatically".
+        zoom_meeting_id:
+          type: string
+        zoom_meeting_password:
+          type: string
+        zoom_meeting_url:
+          type: string
+        zoom_session_type:
+          type: string
+          enum: ["meeting", "webinar"]
+        community_api_id:
+          type: string
+          description: The community that the event should be linked to.
+
+    createEventResponse:
+      type: object
+      properties:
+        api_id:
+          type: string
+          description: The ID of the event.
+
+    importAudienceRequest:
+      type: object
+      required:
+        - emails
+      properties:
+        emails:
+          type: array
+          items:
+            type: string
+          description: An array of emails.
+        member_tag_api_ids:
+          type: array
+          items:
+            type: string
+          description: Optional. An array of tag IDs to apply to the members.

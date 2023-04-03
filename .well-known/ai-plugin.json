@@ -1,0 +1,23 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Lu.ma Events",
+  "name_for_model": "luma_events",
+  "description_for_human": "Plugin for managing and creating events through the lu.ma platform. You can add events, add attendees to events, or get information about who is attending the event on Lu.ma. Use it whenever a user asks something that might be related to an event or wants to add people to an event.",
+  "description_for_model": "Manage and create events on ChatGPT with Lu.ma! You can create events, add attendees, and get information about your attendees for the events you are hosting on Lu.ma.",
+  "auth": {
+    "type": "service_http",
+    "authorization_type": "bearer",
+    "api_key_header_name": "x-luma-api-key",
+    "verification_tokens": {
+      "openai": "758e9ef7984b415688972d749f8aa58e"
+    }
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://api.lu.ma/.well-known/openapi.yaml",
+    "is_user_authenticated": false
+  },
+  "logo_url": "https://api.lu.ma/.well-known/logo.png",
+  "contact_email": "support@lu.ma",
+  "legal_info_url": "https://lu.ma/terms"
+}
